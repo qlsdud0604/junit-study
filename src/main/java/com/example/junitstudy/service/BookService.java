@@ -43,4 +43,15 @@ public class BookService {
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
+
+    @Transactional(rollbackOn = RuntimeException.class)
+    public void modifyBook(Long id, BookSaveReqDto dto) {
+        Optional<Book> bookOP = bookRepository.findById(id);
+        if (bookOP.isPresent()) {
+            Book bookPS = bookOP.get();
+            bookPS.update(dto.getTitle(), dto.getAuthor());
+        } else {
+            throw new RuntimeException("책이 존재하지 않습니다.");
+        }
+    }
 }
