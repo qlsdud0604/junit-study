@@ -4,6 +4,7 @@ import com.example.junitstudy.domain.Book;
 import com.example.junitstudy.domain.BookRepository;
 import com.example.junitstudy.dto.BookRespDto;
 import com.example.junitstudy.dto.BookSaveReqDto;
+import com.example.junitstudy.util.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,16 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final MailSender mailSender;
 
     @Transactional(rollbackOn = RuntimeException.class)
     public BookRespDto saveBook(BookSaveReqDto dto) {
         Book bookPS = bookRepository.save(dto.toEntity());
+        if (bookPS != null) {
+            if (!mailSender.sender()) {
+                throw new RuntimeException("메일이 전송되지 않았습니다.");
+            }
+        }
         return new BookRespDto().toDto(bookPS);
     }
 
