@@ -54,4 +54,24 @@ public class BookRepositoryTest {
         assertEquals("테스트 책 작가", booksPS.get(0).getAuthor());
     }
 
+    @DisplayName("책 조회 테스트")
+    @Test
+    public void selectBook() {
+        // given
+        String title = "테스트 책 제목";
+        String author = "테스트 책 작가";
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .build();
+        bookRepository.save(book);
+
+        // when
+        Book bookPS = bookRepository.findById(1L).get();
+
+        // then
+        assertEquals("테스트 책 제목", bookPS.getTitle());
+        assertEquals("테스트 책 작가", bookPS.getAuthor());
+    }
+
 }
