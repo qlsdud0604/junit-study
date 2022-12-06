@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -19,5 +21,11 @@ public class BookService {
     public BookRespDto saveBook(BookSaveReqDto dto) {
         Book bookPS = bookRepository.save(dto.toEntity());
         return new BookRespDto().toDto(bookPS);
+    }
+
+    public List<BookRespDto> selectBookList() {
+        return bookRepository.findAll().stream()
+                .map(bookPS -> new BookRespDto().toDto(bookPS))
+                .collect(Collectors.toList());
     }
 }
