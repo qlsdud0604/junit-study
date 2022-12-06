@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,5 +28,14 @@ public class BookService {
         return bookRepository.findAll().stream()
                 .map(bookPS -> new BookRespDto().toDto(bookPS))
                 .collect(Collectors.toList());
+    }
+
+    public BookRespDto selectBook(Long id) {
+        Optional<Book> bookOP = bookRepository.findById(id);
+        if (bookOP.isPresent()) {
+            return new BookRespDto().toDto(bookOP.get());
+        } else {
+            throw new RuntimeException("책이 존재하지 않습니다.");
+        }
     }
 }
