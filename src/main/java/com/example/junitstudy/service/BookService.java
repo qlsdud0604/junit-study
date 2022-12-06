@@ -38,4 +38,9 @@ public class BookService {
             throw new RuntimeException("책이 존재하지 않습니다.");
         }
     }
+
+    @Transactional(rollbackOn = RuntimeException.class)
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
+    }
 }
