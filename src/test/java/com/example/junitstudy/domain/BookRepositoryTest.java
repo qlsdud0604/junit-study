@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest   // DB와 관련된 컴포넌트만 메모리에 로딩
@@ -30,6 +32,26 @@ public class BookRepositoryTest {
         // then
         assertEquals(title, bookPS.getTitle());
         assertEquals(author, bookPS.getAuthor());
+    }
+
+    @DisplayName("책 목록 조회 테스트")
+    @Test
+    public void selectBookListTest() {
+        // given
+        String title = "테스트 책 제목";
+        String author = "테스트 책 작가";
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .build();
+        bookRepository.save(book);
+
+        // when
+        List<Book> booksPS = bookRepository.findAll();
+
+        // then
+        assertEquals("테스트 책 제목", booksPS.get(0).getTitle());
+        assertEquals("테스트 책 작가", booksPS.get(0).getAuthor());
     }
 
 }
