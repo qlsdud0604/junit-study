@@ -94,4 +94,23 @@ public class BookRepositoryTest {
         assertFalse(bookPS.isPresent());
     }
 
+    @Sql("classpath:db/tableInit.sql")
+    @DisplayName("책 수정 테스트")
+    @Test
+    public void modifyBook() {
+        // given
+        Long id = 1L;
+        String title = "책 제목 수정";
+        String author = "책 작가 수정";
+        Book book = new Book(id, title, author);
+
+        // when
+        Book bookPS = bookRepository.save(book);
+
+        // then
+        assertEquals(id, bookPS.getId());
+        assertEquals(title, bookPS.getTitle());
+        assertEquals(author, bookPS.getAuthor());
+    }
+
 }
