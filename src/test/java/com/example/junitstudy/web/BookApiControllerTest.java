@@ -8,6 +8,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,7 @@ public class BookApiControllerTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
 
+    @DisplayName("책 저장 기능 통합 테스트")
     @Test
     public void saveBookTest() throws Exception {
         // given
@@ -60,6 +62,17 @@ public class BookApiControllerTest {
 
         assertThat(title).isEqualTo(bookSaveReqDto.getTitle());
         assertThat(author).isEqualTo(bookSaveReqDto.getAuthor());
+    }
+
+    @DisplayName("책 목록 조회 기능 통합 테스트")
+    @Test
+    public void selectBookList() {
+        // given
+
+
+        // when
+
+        // then
     }
 
 }
