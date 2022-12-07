@@ -88,7 +88,7 @@ public class BookApiControllerTest {
 
     @DisplayName("책 목록 조회 기능 통합 테스트")
     @Test
-    public void selectBookList() {
+    public void selectBookListTest() {
         // given
 
         // when
@@ -116,7 +116,7 @@ public class BookApiControllerTest {
     @Sql("classpath:db/tableInit.sql")
     @DisplayName("책 조회 기능 통합 테스트")
     @Test
-    public void selectBook() {
+    public void selectBookTest() {
         // given
         Long id = 1L;
 
@@ -141,7 +141,7 @@ public class BookApiControllerTest {
     @Sql("classpath:db/tableInit.sql")
     @DisplayName("책 삭제 기능 통합 테스트")
     @Test
-    public void deleteBook() {
+    public void deleteBookTest() {
         // given
         Long id = 1L;
 
