@@ -28,19 +28,19 @@ public class BookService {
                 throw new RuntimeException("메일이 전송되지 않았습니다.");
             }
         }
-        return new BookRespDto().toDto(bookPS);
+        return bookPS.toDto();
     }
 
     public List<BookRespDto> selectBookList() {
         return bookRepository.findAll().stream()
-                .map(bookPS -> new BookRespDto().toDto(bookPS))
+                .map(bookPS -> bookPS.toDto())
                 .collect(Collectors.toList());
     }
 
     public BookRespDto selectBook(Long id) {
         Optional<Book> bookOP = bookRepository.findById(id);
         if (bookOP.isPresent()) {
-            return new BookRespDto().toDto(bookOP.get());
+            return bookOP.get().toDto();
         } else {
             throw new RuntimeException("책이 존재하지 않습니다.");
         }
