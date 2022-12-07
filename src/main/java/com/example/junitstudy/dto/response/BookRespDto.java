@@ -1,6 +1,5 @@
-package com.example.junitstudy.dto;
+package com.example.junitstudy.dto.response;
 
-import com.example.junitstudy.domain.Book;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

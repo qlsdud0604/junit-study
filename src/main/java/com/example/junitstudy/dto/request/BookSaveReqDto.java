@@ -1,4 +1,4 @@
-package com.example.junitstudy.dto;
+package com.example.junitstudy.dto.request;
 
 import com.example.junitstudy.domain.Book;
 import lombok.Getter;
