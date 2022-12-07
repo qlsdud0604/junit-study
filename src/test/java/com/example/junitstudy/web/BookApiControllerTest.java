@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -107,6 +108,31 @@ public class BookApiControllerTest {
 
         assertThat(code).isEqualTo(successCode);
         assertThat(msg).isEqualTo(successMsg);
+        assertThat(title).isEqualTo(expectedBookTitle);
+        assertThat(author).isEqualTo(expectedBookAuthor);
+    }
+
+    @Sql("classpath:db/tableInit.sql")
+    @DisplayName("책 조회 기능 통합 테스트")
+    @Test
+    public void selectBook() {
+        // given
+        Long id = 1L;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange(
+                "/api/v1/book/" + id,
+                HttpMethod.GET,
+                request,
+                String.class
+        );
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        String title = dc.read("$.body.title");
+        String author = dc.read("$.body.author");
+
         assertThat(title).isEqualTo(expectedBookTitle);
         assertThat(author).isEqualTo(expectedBookAuthor);
     }
