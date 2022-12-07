@@ -77,6 +77,22 @@ public class BookApiController {
         );
     }
 
+    @PutMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody @Valid BookSaveReqDto reqDto, BindingResult bindingResult) {
+        checkValidationError(bindingResult);
+
+        BookRespDto bookRespDto = bookService.modifyBook(id, reqDto);
+
+        return new ResponseEntity<>(
+                CMRepsDto.builder()
+                        .code(1)
+                        .msg("책 수정정 성공")
+                       .body(bookRespDto)
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
     private void checkValidationError(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
