@@ -12,6 +12,6 @@ public class MailSenderAdapter implements MailSender {
 
     @Override
     public boolean sender() {
-        return true;
+        return mail.sendMail();
     }
 }
