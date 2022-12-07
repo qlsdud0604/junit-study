@@ -22,10 +22,11 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)   // 랜덤 포트를 이용한 통합 테스트
 public class BookApiControllerTest {
 
-    private static final Integer successCode = 1;
-    private static final String successMsg = "책 목록 조회 성공";
-    private static final String expectedBookTitle = "테스트 책 제목";
-    private static final String expectedBookAuthor = "테스트 책 작가";
+    private static final Integer SUCCESS_CODE = 1;
+    private static final String SUCCESS_SELECT_BOOK_LIST_MSG = "책 목록 조회 성공";
+    private static final String SUCCESS_DELETE_BOOK_MSG = "책 삭제 성공";
+    private static final String EXPECTED_BOOK_TITLE = "테스트 책 제목";
+    private static final String EXPECTED_BOOK_AUTHOR = "테스트 책 작가";
 
     @Autowired
     private BookService bookService;
@@ -48,8 +49,8 @@ public class BookApiControllerTest {
 
     @BeforeEach
     public void saveBookBeforeTest() {
-        String title = expectedBookTitle;
-        String author = expectedBookAuthor;
+        String title = EXPECTED_BOOK_TITLE;
+        String author = EXPECTED_BOOK_AUTHOR;
         Book book = Book.builder()
                 .title(title)
                 .author(author)
@@ -106,10 +107,10 @@ public class BookApiControllerTest {
         String title = dc.read("$.body.items[0].title");
         String author = dc.read("$.body.items[0].author");
 
-        assertThat(code).isEqualTo(successCode);
-        assertThat(msg).isEqualTo(successMsg);
-        assertThat(title).isEqualTo(expectedBookTitle);
-        assertThat(author).isEqualTo(expectedBookAuthor);
+        assertThat(code).isEqualTo(SUCCESS_CODE);
+        assertThat(msg).isEqualTo(SUCCESS_SELECT_BOOK_LIST_MSG);
+        assertThat(title).isEqualTo(EXPECTED_BOOK_TITLE);
+        assertThat(author).isEqualTo(EXPECTED_BOOK_AUTHOR);
     }
 
     @Sql("classpath:db/tableInit.sql")
@@ -133,8 +134,32 @@ public class BookApiControllerTest {
         String title = dc.read("$.body.title");
         String author = dc.read("$.body.author");
 
-        assertThat(title).isEqualTo(expectedBookTitle);
-        assertThat(author).isEqualTo(expectedBookAuthor);
+        assertThat(title).isEqualTo(EXPECTED_BOOK_TITLE);
+        assertThat(author).isEqualTo(EXPECTED_BOOK_AUTHOR);
     }
 
+    @Sql("classpath:db/tableInit.sql")
+    @DisplayName("책 삭제 기능 통합 테스트")
+    @Test
+    public void deleteBook() {
+        // given
+        Long id = 1L;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange(
+                "/api/v1/book/" + id,
+                HttpMethod.DELETE,
+                request,
+                String.class
+        );
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String msg = dc.read("$.msg");
+
+        assertThat(code).isEqualTo(SUCCESS_CODE);
+        assertThat(msg).isEqualTo(SUCCESS_DELETE_BOOK_MSG);
+    }
 }
