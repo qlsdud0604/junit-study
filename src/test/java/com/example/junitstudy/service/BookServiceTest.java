@@ -93,4 +93,26 @@ public class BookServiceTest {
         assertThat(bookRespDto.getTitle()).isEqualTo(book.getTitle());
         assertThat(bookRespDto.getAuthor()).isEqualTo(book.getAuthor());
     }
+
+    @DisplayName("책 수정 테스트")
+    @Test
+    public void modifyBookTest() {
+        // given
+        Long id = 1L;
+        BookSaveReqDto dto = new BookSaveReqDto();
+        dto.setTitle("테스트 제목 수정");
+        dto.setAuthor("테스트 작가 수정");
+
+        // stub
+        Book book = new Book(id, "테스트 제목", "테스트 작가");
+        Optional<Book> bookOP = Optional.of(book);
+        when(bookRepository.findById(any())).thenReturn(bookOP);
+
+        // when
+        BookRespDto bookRespDto = bookService.modifyBook(id, dto);
+
+        // then
+        assertThat(bookRespDto.getTitle()).isEqualTo(dto.getTitle());
+        assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());
+    }
 }
