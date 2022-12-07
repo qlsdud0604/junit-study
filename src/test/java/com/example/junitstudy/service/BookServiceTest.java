@@ -5,7 +5,6 @@ import com.example.junitstudy.domain.BookRepository;
 import com.example.junitstudy.dto.BookRespDto;
 import com.example.junitstudy.dto.BookSaveReqDto;
 import com.example.junitstudy.util.MailSender;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -79,14 +78,15 @@ public class BookServiceTest {
     @Test
     public void selectBookTest() {
         // given
-        Book book =  new Book(1L, "책 조회 테스트 제목", "책 조회 테스트 작가");
+        Long id = 1L;
+        Book book = new Book(id, "책 조회 테스트 제목", "책 조회 테스트 작가");
         Optional<Book> bookOP = Optional.of(book);
 
         // stub
         when(bookRepository.findById(any())).thenReturn(bookOP);
 
         // when
-        BookRespDto bookRespDto = bookService.selectBook(1L);
+        BookRespDto bookRespDto = bookService.selectBook(id);
 
         // then
         assertThat(bookRespDto.getId()).isEqualTo(book.getId());
