@@ -51,6 +51,19 @@ public class BookApiController {
         );
     }
 
+    @GetMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> getBook(@PathVariable Long id) {
+        BookRespDto bookRespDto = bookService.selectBook(id);
+        return new ResponseEntity<>(
+                CMRepsDto.builder()
+                        .code(1)
+                        .msg("책 조회 성공")
+                        .body(bookRespDto)
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
     private void checkValidationError(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
