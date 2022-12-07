@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,5 +73,24 @@ public class BookServiceTest {
         assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
         assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo(books.get(1).getTitle());
         assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo(books.get(1).getAuthor());
+    }
+
+    @DisplayName("책 조회 테스트")
+    @Test
+    public void selectBookTest() {
+        // given
+        Book book =  new Book(1L, "책 조회 테스트 제목", "책 조회 테스트 작가");
+        Optional<Book> bookOP = Optional.of(book);
+
+        // stub
+        when(bookRepository.findById(any())).thenReturn(bookOP);
+
+        // when
+        BookRespDto bookRespDto = bookService.selectBook(1L);
+
+        // then
+        assertThat(bookRespDto.getId()).isEqualTo(book.getId());
+        assertThat(bookRespDto.getTitle()).isEqualTo(book.getTitle());
+        assertThat(bookRespDto.getAuthor()).isEqualTo(book.getAuthor());
     }
 }
