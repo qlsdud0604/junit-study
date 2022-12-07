@@ -64,6 +64,19 @@ public class BookApiController {
         );
     }
 
+    @DeleteMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return new ResponseEntity<>(
+                CMRepsDto.builder()
+                        .code(1)
+                        .msg("책 삭제 성공")
+                        .body(null)
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
     private void checkValidationError(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
