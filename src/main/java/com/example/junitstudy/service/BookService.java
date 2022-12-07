@@ -2,6 +2,7 @@ package com.example.junitstudy.service;
 
 import com.example.junitstudy.domain.Book;
 import com.example.junitstudy.domain.BookRepository;
+import com.example.junitstudy.dto.response.BookListRespDto;
 import com.example.junitstudy.dto.response.BookRespDto;
 import com.example.junitstudy.dto.request.BookSaveReqDto;
 import com.example.junitstudy.util.MailSender;
@@ -31,10 +32,14 @@ public class BookService {
         return bookPS.toDto();
     }
 
-    public List<BookRespDto> selectBookList() {
-        return bookRepository.findAll().stream()
-                .map(bookPS -> bookPS.toDto())
-                .collect(Collectors.toList());
+    public BookListRespDto selectBookList() {
+        return BookListRespDto.builder()
+                .items(
+                        bookRepository.findAll().stream()
+                        .map(bookPS -> bookPS.toDto())
+                        .collect(Collectors.toList())
+                )
+                .build();
     }
 
     public BookRespDto selectBook(Long id) {
