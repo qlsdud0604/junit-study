@@ -10,7 +10,7 @@ public class BookListRespDto {
     List<BookRespDto> items;
 
     @Builder
-    public BookListRespDto(List<BookRespDto> bookList) {
-        this.items = bookList;
+    public BookListRespDto(List<BookRespDto> items) {
+        this.items = items;
     }
 }
