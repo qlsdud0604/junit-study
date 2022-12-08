@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,9 +28,6 @@ public class BookApiControllerTest {
     private static final String SUCCESS_DELETE_BOOK_MSG = "책 삭제 성공";
     private static final String EXPECTED_BOOK_TITLE = "테스트 책 제목";
     private static final String EXPECTED_BOOK_AUTHOR = "테스트 책 작가";
-
-    @Autowired
-    private BookService bookService;
 
     @Autowired
     private BookRepository bookRepository;
@@ -161,5 +159,37 @@ public class BookApiControllerTest {
 
         assertThat(code).isEqualTo(SUCCESS_CODE);
         assertThat(msg).isEqualTo(SUCCESS_DELETE_BOOK_MSG);
+    }
+
+
+    @Sql("classpath:db/tableInit.sql")
+    @DisplayName("책 수정 기능 통합 테스트")
+    @Test
+    public void updateBookTest() throws Exception {
+        // given
+        Long id = 1L;
+
+        BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
+        bookSaveReqDto.setTitle("제목 수정");
+        bookSaveReqDto.setAuthor("작가 수정");
+
+        String body = om.writeValueAsString(bookSaveReqDto);
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = rt.exchange(
+                "/api/v1/book/" + id,
+                HttpMethod.PUT,
+                request,
+                String.class
+        );
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        String title = dc.read("$.body.title");
+        String author = dc.read("$.body.author");
+
+        assertThat(title).isEqualTo(bookSaveReqDto.getTitle());
+        assertThat(author).isEqualTo(bookSaveReqDto.getAuthor());
     }
 }

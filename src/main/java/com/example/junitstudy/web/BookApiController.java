@@ -87,7 +87,7 @@ public class BookApiController {
                 CMRepsDto.builder()
                         .code(1)
                         .msg("책 수정 성공")
-                       .body(bookRespDto)
+                        .body(bookRespDto)
                         .build(),
                 HttpStatus.OK
         );
