@@ -3,7 +3,6 @@ package com.example.junitstudy.web;
 import com.example.junitstudy.domain.Book;
 import com.example.junitstudy.domain.BookRepository;
 import com.example.junitstudy.dto.request.BookSaveReqDto;
-import com.example.junitstudy.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -20,6 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.*;
 
+@ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)   // 랜덤 포트를 이용한 통합 테스트
 public class BookApiControllerTest {
 
