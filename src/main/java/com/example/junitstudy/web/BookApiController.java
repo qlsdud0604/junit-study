@@ -86,7 +86,7 @@ public class BookApiController {
         return new ResponseEntity<>(
                 CMRepsDto.builder()
                         .code(1)
-                        .msg("책 수정정 성공")
+                        .msg("책 수정 성공")
                        .body(bookRespDto)
                         .build(),
                 HttpStatus.OK
